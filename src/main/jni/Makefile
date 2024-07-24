@@ -5,9 +5,11 @@ all: libfoo.so
 clean:
 	rm -f *.o *.so
 
-libfoo.so: foo.o
-	g++ -shared -o libfoo.so foo.o
+libfoo.so: foo.o edit_distance.o
+	g++ -shared -o libfoo.so foo.o edit_distance.o
 
 foo.o: foo.cc foo.h
 	g++ -c -fPIC foo.cc
 
+edit_distance.o: edit_distance.cpp edit_distance.h
+	g++ -c -fPIC -march=native -Wall -O3 edit_distance.cpp

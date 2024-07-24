@@ -5,7 +5,8 @@ import org.bytedeco.javacpp.annotation.*;
 
 
 //@Platform(include="<vector>")
-@Platform(include="foo.h", link="foo")
+@Platform(include={"foo.h", "edit_distance.h"},
+          link={"foo"})
 @Namespace("FooLib")
 public class FooLib {
 	public static class Foo extends Pointer {
@@ -25,6 +26,7 @@ public class FooLib {
 		public native void setVector(@ByRef IntVector vec);
 	}
 
+    public static native int levenshtein(@ByVal @StdString String seq1, @ByVal @StdString String seq2);
 
 	public static class Values extends Pointer {
 		static { Loader.load(); } 
@@ -78,7 +80,9 @@ public class FooLib {
 		vect.put(2, 3);
 		foo.setVector(vect);
 		System.out.println("vector result: " + foo.getMethod());
-		
+
+		System.out.println("Levenstein: " + levenshtein("ABC123", "ABC1234"));
+
 		// close resources
 		try {
 			foo.close();
